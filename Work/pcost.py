@@ -1,6 +1,7 @@
 # pcost.py
 #
 # Exercise 1.27 + 1.30 + 1.31 + 1.32
+import sys
 def portfolio_cost(filename):
     import csv
     counterOfLines = 0
@@ -20,5 +21,11 @@ def portfolio_cost(filename):
     except FileNotFoundError:
         print('Ну ты чего, братишка? Такого файла нет!')
 
-cost = portfolio_cost('Data/portfolioTest.csv')
+
+if len(sys.argv) == 2:
+    filename = sys.argv[1]
+else:
+    filename = 'Data/portfolio.csv'
+
+cost = portfolio_cost(filename)
 print('Total cost:', cost)
