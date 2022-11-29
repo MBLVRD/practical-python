@@ -9,11 +9,14 @@ def portfolio_cost(filename):
     with open(filename, 'rt') as f:
         rows = csv.reader(f)
         headers = next(rows)
-        for row in rows:
-            shares = int(row[1])
-            price = float(row[2])
-            total_cost += shares * price
-    return total_cost
+        for rownum, row in enumerate(rows, start=1):
+            try:
+                shares = int(row[1])
+                price = float(row[2])
+                total_cost += shares * price
+            except ValueError:
+                print(f'Row {rownum}: Bad row: {row}')
+        return total_cost
 
-cost = portfolio_cost('Data/portfolio.csv')
+cost = portfolio_cost('Data/missing.csv')
 print('Total cost:', cost)
