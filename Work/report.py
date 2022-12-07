@@ -1,6 +1,6 @@
 # report.py
 #
-# Exercise 2.14
+# Exercise 2.16
 import csv
 
 def read_portfolio_tuples(filename):
