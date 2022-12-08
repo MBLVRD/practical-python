@@ -2,18 +2,9 @@
 #
 # Exercise 2.16
 import csv
+from collections import Counter
 
-def read_portfolio_tuples(filename):
-    portfolio = []
-    with open(filename, 'rt') as f:
-        rows = csv.reader(f)
-        headers = next(rows)
-        for row in rows:
-            temp = (row[0], int(row[1]), float(row[2]))
-            portfolio.append(temp)
-    return portfolio
-
-def read_portfolio_dict(filename):
+def read_portfolio(filename):
     portfolio = []
     with open(filename, 'rt') as f:
         rows = csv.reader(f)
@@ -45,25 +36,8 @@ def report_formatted_out(report):
         temp_price = '$' + f'{price:>0.2f}'
         print(f'{name:>10s} {shares:>10} {date:>10} {time:>10} {temp_price:>10s} {change:>10.2f}')
 
-def gain_loss_calculator(portfolio_filename, prices_filename):
-    portfolio = read_portfolio_dict(portfolio_filename)
-    prices = read_prices(prices_filename)
-    Total_gain = 0.0
-    whole_portfolio_price = 0.0
-    for temp in portfolio:
-        current_price = prices[temp['name']]
-        whole_portfolio_price += current_price * temp['shares']
-        Total_gain += (current_price - temp['price']) * temp['shares']
-
-    if (Total_gain > 0):
-        print('Total gain is',Total_gain)
-    elif(Total_gain < 0):
-        print('Total loss is',Total_gain)
-    else:
-        print('There is no gain or loss')
-
 def make_report(portfolio_filename, prices_filename):
-    portfolio = read_portfolio_dict(portfolio_filename)
+    portfolio = read_portfolio(portfolio_filename)
     prices = read_prices(prices_filename)
     result = []
     for temp in portfolio:
@@ -78,4 +52,5 @@ def make_report(portfolio_filename, prices_filename):
     return result
 
 report = make_report('Data/portfoliodate.csv', 'Data/prices.csv')
+port = read_portfolio('Data/portfoliodate.csv')
 report_formatted_out(report)
