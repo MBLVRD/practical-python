@@ -4,6 +4,10 @@ import csv
 from collections import Counter
 
 def read_portfolio(filename):
+    '''
+    Read a stock portfolio file into a list of dictionaries with keys
+    name, shares, and price.
+    '''
     portfolio = []
     with open(filename, 'rt') as f:
         rows = csv.reader(f)
@@ -46,13 +50,7 @@ def make_report(portfolio, prices):
         result.append(cur_tuple)
     return result
 
-
 portfolio = read_portfolio('Data/portfoliodate.csv')
 prices = read_prices('Data/prices.csv')
 report = make_report(portfolio, prices)
 report_formatted_out(report)
-
-holdings = Counter()
-for s in portfolio:
-    holdings[s['name']] += s['shares']
-print(holdings)
