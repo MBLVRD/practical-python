@@ -1,35 +1,15 @@
 # report.py
 # Exercise 2.16
-import csv
+import fileparse
 from collections import Counter
 
 def read_portfolio(filename):
-    '''
-    Read a stock portfolio file into a list of dictionaries with keys
-    name, shares, and price.
-    '''
-    portfolio = []
-    with open(filename, 'rt') as f:
-        rows = csv.reader(f)
-        headers = next(rows)
-        for row in rows:
-            record = dict(zip(headers, row))
-            record['shares'] = int(record['shares'])
-            record['price'] = float(record['price'])
-            portfolio.append(record)
-    return portfolio
+
+    return fileparse.parse_csv(filename)
 
 def read_prices(filename):
-    prices_dict = {}
-    with open(filename, 'rt') as f:
-        rows = csv.reader(f)
-        for row in rows:
-            try:
-                name, price = row
-                prices_dict[name] = float(price)
-            except:
-                pass
-    return prices_dict
+
+    return dict(fileparse.parse_csv(filename, has_headers = False, types = [str, float]))
 
 def report_formatted_out(report):
     headers = ('Name', 'Shares', 'Price', 'Change')
@@ -50,7 +30,7 @@ def make_report(portfolio, prices):
         result.append(cur_tuple)
     return result
 
-portfolio = read_portfolio('Data/portfoliodate.csv')
+portfolio = read_portfolio('Data/portfolio.csv')
 prices = read_prices('Data/prices.csv')
 report = make_report(portfolio, prices)
 report_formatted_out(report)
