@@ -10,6 +10,12 @@ class Stock:
     def sell(self, num):
         self.shares -= num
 
-a = Stock('Google', 100, 94.4)
-a.sell(13)
-print (a.cost())
+    def __repr__(self) -> str:
+        return f'Stock(\'{self.name}\', {self.shares}, {self.price})'
+
+class MyStock(Stock):
+    def panic(self):
+        self.sell(self.shares)
+        
+    def cost(self):
+        return 1.25 * self.shares * self.price
