@@ -1,80 +1,46 @@
 # report.py
-#
-# Exercise 2.4
-import csv
+# Exercise 2.16
+import fileparse, stock, tableformat
 
-def read_portfolio_tuples(filename):
-    portfolio = []
-    with open(filename, 'rt') as f:
-        rows = csv.reader(f)
-        headers = next(rows)
-        for row in rows:
-            temp = (row[0], int(row[1]), float(row[2]))
-            portfolio.append(temp)
-    return portfolio
-
-def read_portfolio_dict(filename):
-    portfolio = []
-    with open(filename, 'rt') as f:
-        rows = csv.reader(f)
-        headers = next(rows)
-        for row in rows:
-            temp = {'name' : row[0], 'shares': int(row[1]), 'price': float(row[2])}
-            portfolio.append(temp)
-    return portfolio
+def read_portfolio(filename):
+    with open(filename, 'rt') as lines:
+        portfolio = fileparse.parse_csv(lines, select = ['name', 'shares', 'price'], types = [str, int, float])
+        result = [stock.Stock(element['name'], element['shares'], element['price']) for element in portfolio]
+        print(result)
+        return result
 
 def read_prices(filename):
-    prices_dict = {}
     with open(filename, 'rt') as f:
-        rows = csv.reader(f)
-        for row in rows:
-            try:
-                name, price = row
-                prices_dict[name] = float(price)
-            except:
-                pass
-    return prices_dict
+        return dict(fileparse.parse_csv(f, has_headers = False, types = [str, float]))
 
-def report_formatted_out(report):
-    headers = ('Name', 'Shares', 'Price', 'Change')
-    print('%10s %10s %10s %10s' % headers)
-    for e in headers:
-        print('-' * 10, end =' ')
-    print()
-    for name, shares, price, change in report:
-        temp_price = '$' + f'{price:>0.2f}'
-        print(f'{name:>10s} {shares:>10d} {temp_price:>10s} {change:>10.2f}')
+def print_report(report_data, formatter):
+    for e in report_data:
+        rowdata = [e['name'], str(e['shares']), f'{e["price"]:0.2f}', f'{e["price"]:0.2f}']
+        formatter.row(rowdata)
 
-def gain_loss_calculator(portfolio_filename, prices_filename):
-    portfolio = read_portfolio_dict(portfolio_filename)
-    prices = read_prices(prices_filename)
-    Total_gain = 0.0
-    whole_portfolio_price = 0.0
-
-    for temp in portfolio:
-        current_price = prices[temp['name']]
-        whole_portfolio_price += current_price * temp['shares']
-        Total_gain += (current_price - temp['price']) * temp['shares']
-
-    if (Total_gain > 0):
-        print('Total gain is',Total_gain)
-    elif(Total_gain < 0):
-        print('Total loss is',Total_gain)
-    else:
-        print('There is no gain or loss')
-
-def make_report(portfolio_filename, prices_filename):
-    portfolio = read_portfolio_dict(portfolio_filename)
-    prices = read_prices(prices_filename)
+def make_report_data(portfolio, prices):
     result = []
-    for temp in portfolio:
-        name = temp['name']
-        shares = temp['shares']
-        price = prices[temp['name']]
-        change = float(price) - float(temp['price'])
-        cur_tuple = (name, shares, price, change)
-        result.append(cur_tuple)
+    for line in portfolio:
+        cur_dict = {'name': line.name, 
+                    'shares': line.shares, 
+                    'price': prices[line.name], 
+                    'change': prices[line.name] - line.price}
+        result.append(cur_dict)
     return result
 
-report = make_report('Data/portfolio.csv', 'Data/prices.csv')
-report_formatted_out(report)
+def portfolio_report(portfolio_file, price_file, format):
+    portfolio = read_portfolio(portfolio_file)
+    prices = read_prices(price_file)
+    report = make_report_data(portfolio, prices)
+
+    formatter = tableformat.create_formatter(format)
+    print_report(report, formatter)
+    tableformat.print_table(portfolio, ['shares', 'name'], formatter)
+
+def main (args):
+    if len(args) != 4:
+        raise SystemExit(f'Usage: {args[0]} ' 'portfile pricefile')
+    portfolio_report(args[1], args[2], args[3])
+
+if __name__ == '__main__':
+    main(['report.py', 'Data\portfolio.csv', 'Data\prices.csv', 'txt'])  
