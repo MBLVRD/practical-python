@@ -15,18 +15,16 @@ def read_prices(filename):
 
 def print_report(report_data, formatter):
     for e in report_data:
-        price = e['price']
-        change = e['change']
-        rowdata = [e['name'], str(e['shares']), f'{price:0.2f}', f'{change:0.2f}']
+        rowdata = [e['name'], str(e['shares']), f'{e["price"]:0.2f}', f'{e["price"]:0.2f}']
         formatter.row(rowdata)
 
 def make_report_data(portfolio, prices):
     result = []
-    for temp in portfolio:
-        cur_dict = {'name': temp.name, 
-                    'shares': temp.shares, 
-                    'price': prices[temp.name], 
-                    'change': prices[temp.name] - temp.price}
+    for line in portfolio:
+        cur_dict = {'name': line.name, 
+                    'shares': line.shares, 
+                    'price': prices[line.name], 
+                    'change': prices[line.name] - line.price}
         result.append(cur_dict)
     return result
 
@@ -37,7 +35,7 @@ def portfolio_report(portfolio_file, price_file, format):
 
     formatter = tableformat.create_formatter(format)
     print_report(report, formatter)
-    tableformat.print_table(portfolio, ['shares'], formatter)
+    tableformat.print_table(portfolio, ['shares', 'name'], formatter)
 
 def main (args):
     if len(args) != 4:
@@ -45,4 +43,4 @@ def main (args):
     portfolio_report(args[1], args[2], args[3])
 
 if __name__ == '__main__':
-    main(['report.py', 'Data\portfolio.csv', 'Data\prices.csv', 'txt'])    
+    main(['report.py', 'Data\portfolio.csv', 'Data\prices.csv', 'txt'])  

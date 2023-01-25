@@ -36,14 +36,14 @@ class HTMLTableFormatter(TableFormatter):
         print('</td></tr>')
 
 def create_formatter(format):
-        if format == 'txt':
+        if format.lower() == 'txt':
             formatter = TextTableFormatter()
-        elif format == 'csv':
+        elif format.lower() == 'csv':
             formatter = CSVTableFormatter()
-        elif format == 'html':
+        elif format.lower() == 'html':
             formatter = HTMLTableFormatter()
         else:
-            raise RuntimeError(f'Unknown format {format}')
+            raise FormatError(f'Unknown table format: {format}')
         return formatter
 
 def print_table(portfolio, columns, formatter):
@@ -51,3 +51,6 @@ def print_table(portfolio, columns, formatter):
     for e in portfolio:
         result = ([str(getattr(e, colname)) for colname in columns])
         formatter.row(result)
+
+class FormatError(Exception):
+    pass
