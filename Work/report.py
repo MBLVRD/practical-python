@@ -6,7 +6,6 @@ def read_portfolio(filename):
     with open(filename, 'rt') as lines:
         portfolio = fileparse.parse_csv(lines, select = ['name', 'shares', 'price'], types = [str, int, float])
         result = [stock.Stock(element['name'], element['shares'], element['price']) for element in portfolio]
-        print(result)
         return result
 
 def read_prices(filename):
