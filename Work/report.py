@@ -15,7 +15,7 @@ def read_prices(filename):
 
 def print_report(report_data, formatter):
     for e in report_data:
-        rowdata = [e['name'], int(e['shares']), f'{e["price"]:0.2f}', f'{e["change"]:0.2f}']
+        rowdata = [e['name'], str(e['shares']), f'{e["price"]:0.2f}', f'{e["change"]:0.2f}']
         formatter.row(rowdata)
 
 def make_report_data(portfolio, prices):
@@ -35,7 +35,7 @@ def portfolio_report(portfolio_file, price_file, format):
 
     formatter = tableformat.create_formatter(format)
     print_report(report, formatter)
-    tableformat.print_table(portfolio, ['shares', 'name'], formatter)
+    tableformat.print_table(portfolio, ['name', 'shares'], formatter)
 
 def main (args):
     if len(args) != 4:

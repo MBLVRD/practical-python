@@ -8,7 +8,7 @@ class TableFormatter:
 class TextTableFormatter(TableFormatter):
     def headings(self, headers):
         for h in headers:
-            print(f'{h:>10s}', end=' ')
+            print(f'{h.title():>10s}', end=' ')
         print()
         print(('-' * 10 + ' ') *len(headers))
 
@@ -49,7 +49,6 @@ def create_formatter(format):
 def print_table(portfolio, columns, formatter):
     formatter.headings(columns)
     for e in portfolio:
-        print(e)
         result = ([str(getattr(e, colname)) for colname in columns])
         formatter.row(result)
 
