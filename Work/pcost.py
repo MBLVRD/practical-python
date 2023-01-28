@@ -2,10 +2,11 @@
 #
 # Exercise 1.27 + 1.30 + 1.31 + 1.32
 from report import read_portfolio
+import portfolio
 
 def portfolio_cost(filename):
     portfolio = read_portfolio(filename)
-    return sum([e.cost for e in portfolio])
+    return portfolio.total_cost
 
 def main(args):
     if len(args) != 2:
@@ -13,4 +14,4 @@ def main(args):
     print('Total cost:', portfolio_cost(args[1]))
 
 if __name__ == '__main__':
-    main(['pcost.py', 'Data\portfolio.csv'])    
+    main(['pcost.py', 'Work\Data\portfolio.csv'])    

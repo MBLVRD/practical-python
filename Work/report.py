@@ -1,12 +1,13 @@
 # report.py
 # Exercise 2.16
 import fileparse, stock, tableformat
+from portfolio import Portfolio
 
 def read_portfolio(filename):
     with open(filename, 'rt') as lines:
         portfolio = fileparse.parse_csv(lines, select = ['name', 'shares', 'price'], types = [str, int, float])
         result = [stock.Stock(element['name'], element['shares'], element['price']) for element in portfolio]
-        return result
+        return Portfolio(result)
 
 def read_prices(filename):
     with open(filename, 'rt') as f:
@@ -42,4 +43,4 @@ def main (args):
     portfolio_report(args[1], args[2], args[3])
 
 if __name__ == '__main__':
-    main(['report.py', 'Data\portfolio.csv', 'Data\prices.csv', 'txt'])  
+    main(['report.py', 'Work\Data\portfolio.csv', 'Work\Data\prices.csv', 'txt'])  
