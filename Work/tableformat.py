@@ -49,6 +49,7 @@ def create_formatter(format):
 def print_table(portfolio, columns, formatter):
     formatter.headings(columns)
     for e in portfolio:
+        print(e)
         result = ([str(getattr(e, colname)) for colname in columns])
         formatter.row(result)
 

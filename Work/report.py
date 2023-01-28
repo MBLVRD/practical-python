@@ -15,7 +15,7 @@ def read_prices(filename):
 
 def print_report(report_data, formatter):
     for e in report_data:
-        rowdata = [e['name'], str(e['shares']), f'{e["price"]:0.2f}', f'{e["price"]:0.2f}']
+        rowdata = [e['name'], int(e['shares']), f'{e["price"]:0.2f}', f'{e["change"]:0.2f}']
         formatter.row(rowdata)
 
 def make_report_data(portfolio, prices):
