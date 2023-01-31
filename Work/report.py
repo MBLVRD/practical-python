@@ -3,10 +3,13 @@
 import fileparse, stock, tableformat
 from portfolio import Portfolio
 
-def read_portfolio(filename):
-    with open(filename, 'rt') as lines:
-        portfolio = fileparse.parse_csv(lines, select = ['name', 'shares', 'price'], types = [str, int, float])
-        result = [stock.Stock(element['name'], element['shares'], element['price']) for element in portfolio]
+def read_portfolio(filename, **opts):
+    with open(filename) as lines:
+        portfolio = fileparse.parse_csv(lines, 
+                                        select = ['name', 'shares', 'price'], 
+                                        types = [str, int, float], 
+                                        **opts)
+        result = [stock.Stock(**element) for element in portfolio]
         return Portfolio(result)
 
 def read_prices(filename):
