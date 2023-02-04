@@ -2,6 +2,7 @@
 # Exercise 2.16
 import fileparse, stock, tableformat
 from portfolio import Portfolio
+from timethis import timethis
 
 def read_portfolio(filename, **opts):
     with open(filename) as lines:
@@ -38,7 +39,7 @@ def portfolio_report(portfolio_file, price_file, format):
 
     formatter = tableformat.create_formatter(format)
     print_report(report, formatter)
-    tableformat.print_table(portfolio, ['name', 'shares'], formatter)
+    #tableformat.print_table(portfolio, ['name', 'shares'], formatter)
 
 def main (args):
     if len(args) != 4:
@@ -46,4 +47,5 @@ def main (args):
     portfolio_report(args[1], args[2], args[3])
 
 if __name__ == '__main__':
-    main(['report.py', 'Work\Data\portfolio.csv', 'Work\Data\prices.csv', 'txt'])  
+    main(['report.py', 'Work\Data\portfolio.csv', 'Work\Data\prices.csv', 'txt'])
+    
