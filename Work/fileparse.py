@@ -2,7 +2,7 @@
 # Exercise 3.3 -> 3.14
 import csv
 
-def parse_csv(lines, select=None, types=None, has_headers=True, delimiter=',', silence_errors=True):
+def parse_csv(lines, select=None, types=None, has_headers=True, delimiter=',', silence_errors=False):
     if select and not has_headers:
         raise RuntimeError('select requires column headers')
     rows = csv.reader(lines, delimiter=delimiter)

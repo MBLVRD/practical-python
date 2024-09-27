@@ -8,7 +8,7 @@ class TableFormatter:
 class TextTableFormatter(TableFormatter):
     def headings(self, headers):
         for h in headers:
-            print(f'{h:>10s}', end=' ')
+            print(f'{h.title():>10s}', end=' ')
         print()
         print(('-' * 10 + ' ') *len(headers))
 
